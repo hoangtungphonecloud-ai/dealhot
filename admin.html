@@ -5,16 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quản trị — TungHoang</title>
 <meta name="robots" content="noindex, nofollow">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; }
   body { font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif; margin: 0; background: #f4f6f8; color: #222; }
   .wrap { max-width: 1020px; margin: 0 auto; padding: 24px 16px 60px; }
-  h1 { font-size: 22px; margin: 0 0 4px; }
-  h1 .logo { font-family: 'Rubik Spray Paint', system-ui, cursive; font-size: 26px; letter-spacing: 1px;
-    background: linear-gradient(120deg, #1a56db 5%, #7c3aed 45%, #f97316 95%);
-    -webkit-background-clip: text; background-clip: text; color: transparent; }
+  h1 { font-size: 22px; margin: 0 0 4px; display: flex; align-items: center; gap: 10px; }
+  .logo-wrap { position: relative; display: inline-block; width: 40px; height: 40px; border-radius: 10px; overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,.22); animation: logoFloat 3.5s ease-in-out infinite; flex: none; }
+  .logo-wrap img { width: 100%; height: 100%; display: block; object-fit: cover; }
+  .logo-wrap::after { content: ""; position: absolute; top: 0; left: -80%; width: 55%; height: 100%;
+    background: linear-gradient(100deg, transparent, rgba(255,255,255,.5), transparent);
+    transform: skewX(-20deg); animation: logoShine 4.5s ease-in-out infinite; }
+  @keyframes logoFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+  @keyframes logoShine { 0%,55% { left: -80%; } 100% { left: 135%; } }
   .sub { color: #777; font-size: 13px; margin-bottom: 20px; }
   .card { background: #fff; border-radius: 10px; padding: 18px; margin-bottom: 18px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
   .card h2 { font-size: 16px; margin: 0 0 12px; }
@@ -49,7 +52,7 @@
 </head>
 <body>
 <div class="wrap">
-  <h1><span class="logo">TungHoang</span> — Trang quản trị</h1>
+  <h1><span class="logo-wrap"><img src="https://graph.facebook.com/870613039464573/picture?type=large&amp;width=200" alt="TungHoang"></span> Trang quản trị</h1>
   <div class="sub">Sửa deal / mã giảm giá / link tiếp thị rồi bấm "Lưu lên GitHub" — web tự cập nhật sau 1–2 phút.</div>
 
   <div class="card">
