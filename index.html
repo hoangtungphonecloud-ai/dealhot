@@ -164,7 +164,7 @@ footer { position: relative; z-index: 1; }
 <div class="searchbar"><input id="q" type="search" placeholder="Tìm deal, thương hiệu..." autocomplete="off"></div>
 
 <h2 class="section-title" id="sectionTitle">DEAL HOT HÔM NAY</h2>
-<p class="flip-hint">👆 Chạm vào từng ô để mở bất ngờ</p>
+<p class="flip-hint">👆 Rê chuột vào ô để mở quà — bấm để tới trang deal</p>
 <div class="grid" id="grid"></div>
 
 <footer>
@@ -228,8 +228,8 @@ function tileHTML(d, i) {
     backInner = '<div class="gift">🎁</div><div class="back-name">' + esc(d.name) + '</div><div class="back-sub">Sắp cập nhật link</div>';
   }
   const back = '<div class="flip-back" style="' + backShade + '">' + backInner + '</div>';
-  return '<div class="tile flip" style="animation-delay:' + delay + 'ms" role="button" tabindex="0" aria-label="' +
-    esc(d.label || d.name) + ' — chạm để mở bất ngờ"><div class="flip-inner">' + front + back + '</div></div>';
+  return '<div class="tile flip" style="animation-delay:' + delay + 'ms" role="button" tabindex="0" data-url="' + esc(d.url || '') + '" aria-label="' +
+    esc(d.label || d.name) + '"><div class="flip-inner">' + front + back + '</div></div>';
 }
 
 function route() {
@@ -259,7 +259,19 @@ function copyText(text, done) {
   }
 }
 
-document.getElementById("grid").addEventListener("click", function (e) {
+const canHover = window.matchMedia("(hover: hover)").matches;
+const gridEl = document.getElementById("grid");
+
+if (!canHover) {
+  const hint = document.querySelector(".flip-hint");
+  if (hint) hint.textContent = "👆 Chạm 1 lần để mở quà, chạm lần nữa để tới trang deal";
+}
+
+function openUrl(url) {
+  if (url) window.open(url, "_blank", "noopener");
+}
+
+gridEl.addEventListener("click", function (e) {
   const cp = e.target.closest("[data-copy]");
   if (cp) {
     e.stopPropagation();
@@ -271,13 +283,39 @@ document.getElementById("grid").addEventListener("click", function (e) {
   }
   if (e.target.closest(".go-btn")) return; // để link điều hướng bình thường
   const tile = e.target.closest(".tile.flip");
-  if (tile) tile.classList.toggle("flipped");
+  if (!tile) return;
+  if (canHover || tile.classList.contains("flipped")) {
+    openUrl(tile.getAttribute("data-url"));
+  } else {
+    tile.classList.add("flipped"); // mobile: chạm lần 1 mở quà
+  }
 });
 
-document.getElementById("grid").addEventListener("keydown", function (e) {
-  if ((e.key === "Enter" || e.key === " ") && e.target.classList.contains("tile")) {
+if (canHover) {
+  gridEl.addEventListener("mouseover", function (e) {
+    const tile = e.target.closest(".tile.flip");
+    if (tile) tile.classList.add("flipped");
+  });
+  gridEl.addEventListener("mouseout", function (e) {
+    const tile = e.target.closest(".tile.flip");
+    if (tile && !tile.contains(e.relatedTarget)) tile.classList.remove("flipped");
+  });
+}
+
+gridEl.addEventListener("focusin", function (e) {
+  const tile = e.target.closest(".tile.flip");
+  if (tile) tile.classList.add("flipped");
+});
+gridEl.addEventListener("focusout", function (e) {
+  const tile = e.target.closest(".tile.flip");
+  if (tile) tile.classList.remove("flipped");
+});
+gridEl.addEventListener("keydown", function (e) {
+  const tile = e.target.closest(".tile.flip");
+  if (!tile || e.target !== tile) return;
+  if (e.key === "Enter" || e.key === " ") {
     e.preventDefault();
-    e.target.classList.toggle("flipped");
+    openUrl(tile.getAttribute("data-url"));
   }
 });
 
