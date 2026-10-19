@@ -102,20 +102,54 @@ nav a:hover::after, nav a.active::after { transform: scaleX(1); }
 .grid { position: relative; z-index: 1; }
 .tile { animation: tileIn .55s cubic-bezier(.22,.8,.32,1) backwards; }
 @keyframes tileIn { from { opacity: 0; transform: translateY(24px) scale(.98); } }
-a.tile { transition: transform .22s ease; }
-a.tile:hover { transform: translateY(-6px); }
-a.tile:hover .thumb { box-shadow: 0 16px 34px rgba(124,58,237,.20); }
+.tile.flip { transition: transform .22s ease; }
+.tile.flip:hover { transform: translateY(-6px); }
+.tile.flip:hover .thumb { box-shadow: 0 16px 34px rgba(124,58,237,.20); }
 .thumb { transition: box-shadow .25s ease; }
 .thumb img { transition: transform .35s ease; }
-a.tile:hover .thumb img { transform: scale(1.08); }
+.tile.flip:hover .thumb img { transform: scale(1.08); }
 .label {
   background: linear-gradient(135deg, #d43d2a, #a93226);
   box-shadow: 0 3px 10px rgba(192,57,43,.25);
   transition: filter .2s ease, box-shadow .2s ease;
 }
-a.tile:hover .label { filter: brightness(1.1); box-shadow: 0 6px 16px rgba(192,57,43,.35); }
+.tile.flip:hover .label { filter: brightness(1.1); box-shadow: 0 6px 16px rgba(192,57,43,.35); }
 .coupon { transition: transform .18s ease, box-shadow .18s ease, background .18s ease; }
 .coupon:hover { transform: translateY(-1px); background: #fdf0d3; box-shadow: 0 5px 14px rgba(230,126,34,.35); }
+/* ===== Flip card surprise ===== */
+.flip-hint { text-align: center; color: #8a8a9e; font-size: 13.5px; margin: -4px 0 18px; position: relative; z-index: 1; }
+.flip { perspective: 1200px; cursor: pointer; }
+.flip:focus-visible { outline: 3px solid rgba(249,115,22,.55); outline-offset: 3px; border-radius: 12px; }
+.flip-inner { display: grid; transform-style: preserve-3d; transition: transform .65s cubic-bezier(.3,.1,.3,1.12); }
+.flip.flipped .flip-inner { transform: rotateY(180deg); }
+.flip-front, .flip-back { grid-area: 1 / 1; backface-visibility: hidden; -webkit-backface-visibility: hidden; min-width: 0; }
+.flip-back {
+  transform: rotateY(180deg); border-radius: 12px; color: #fff;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 8px; padding: 16px 10px; text-align: center;
+  box-shadow: 0 14px 30px rgba(20,10,50,.28);
+}
+.flip-back .gift { font-size: 30px; line-height: 1; animation: giftBounce 1.8s ease-in-out infinite; }
+@keyframes giftBounce { 0%,100% { transform: translateY(0) rotate(-7deg); } 50% { transform: translateY(-6px) rotate(7deg); } }
+.back-name { font-weight: 800; font-size: 15px; }
+.back-sub { font-size: 13px; opacity: .93; }
+.back-coupon {
+  border: 2px dashed rgba(255,255,255,.85); background: rgba(255,255,255,.14); color: #fff;
+  border-radius: 8px; padding: 7px 12px; font-size: 15px; font-weight: 800; letter-spacing: 1px; cursor: pointer;
+  transition: background .2s ease, transform .15s ease;
+}
+.back-coupon:hover { background: rgba(255,255,255,.28); }
+.back-coupon:active { transform: scale(.95); }
+.go-btn {
+  margin-top: 2px; background: #fff; color: #c0392b; font-weight: 800; font-size: 14px;
+  padding: 9px 18px; border-radius: 999px; text-decoration: none; white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(0,0,0,.25); transition: transform .18s ease, box-shadow .18s ease;
+}
+.go-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,.32); }
+@media (prefers-reduced-motion: reduce) {
+  .flip-inner, .flip-back .gift, .logo-wrap, .logo-wrap::after { transition: none !important; animation: none !important; }
+  .tile { animation: none !important; }
+}
 footer { position: relative; z-index: 1; }
 </style>
 </head>
@@ -130,6 +164,7 @@ footer { position: relative; z-index: 1; }
 <div class="searchbar"><input id="q" type="search" placeholder="Tìm deal, thương hiệu..." autocomplete="off"></div>
 
 <h2 class="section-title" id="sectionTitle">DEAL HOT HÔM NAY</h2>
+<p class="flip-hint">👆 Chạm vào từng ô để mở bất ngờ</p>
 <div class="grid" id="grid"></div>
 
 <footer>
@@ -179,17 +214,22 @@ function tileHTML(d, i) {
     ? '<img src="' + esc(d.image) + '" alt="' + esc(d.name) + '" loading="lazy">'
     : esc(d.name);
   const thumbBg = d.image ? "#ffffff" : esc(d.color || "#555");
-  const thumb = '<div class="thumb" style="background:' + thumbBg + '">' + bg + '</div>';
-  const label = '<div class="label">' + esc(d.label || d.name) + '</div>';
-  const coupon = d.coupon
-    ? '<button class="coupon" data-code="' + esc(d.coupon) + '" title="Bấm để copy mã">Mã: ' + esc(d.coupon) + ' ⧉</button>'
-    : '';
-  const inner = thumb + label + coupon;
-  const style = ' style="animation-delay:' + delay + 'ms"';
+  const front = '<div class="flip-front"><div class="thumb" style="background:' + thumbBg + '">' + bg + '</div>' +
+    '<div class="label">' + esc(d.label || d.name) + '</div></div>';
+  const backShade = 'background:linear-gradient(160deg, rgba(0,0,0,.28), rgba(0,0,0,.68)), ' + esc(d.color || "#555");
+  let backInner;
   if (d.url) {
-    return '<a class="tile"' + style + ' href="' + esc(d.url) + '" target="_blank" rel="noopener sponsored">' + inner + '</a>';
+    backInner = '<div class="gift">🎁</div><div class="back-name">' + esc(d.name) + '</div>' +
+      (d.coupon
+        ? '<button class="back-coupon" data-copy="' + esc(d.coupon) + '" title="Bấm để copy mã">' + esc(d.coupon) + ' ⧉</button>'
+        : '<div class="back-sub">Deal hot đang chờ bạn!</div>') +
+      '<a class="go-btn" href="' + esc(d.url) + '" target="_blank" rel="noopener sponsored">Săn deal ngay →</a>';
+  } else {
+    backInner = '<div class="gift">🎁</div><div class="back-name">' + esc(d.name) + '</div><div class="back-sub">Sắp cập nhật link</div>';
   }
-  return '<div class="tile coming"' + style + '>' + inner + '<div class="label" style="background:#999">Sắp cập nhật link</div></div>';
+  const back = '<div class="flip-back" style="' + backShade + '">' + backInner + '</div>';
+  return '<div class="tile flip" style="animation-delay:' + delay + 'ms" role="button" tabindex="0" aria-label="' +
+    esc(d.label || d.name) + ' — chạm để mở bất ngờ"><div class="flip-inner">' + front + back + '</div></div>';
 }
 
 function route() {
@@ -208,19 +248,36 @@ function route() {
     : '<div class="empty">Chưa có deal nào trong mục này.</div>';
 }
 
-document.addEventListener("click", function (e) {
-  const b = e.target.closest(".coupon");
-  if (!b) return;
-  e.preventDefault(); e.stopPropagation();
-  const code = b.getAttribute("data-code");
-  function done() { const t = b.textContent; b.textContent = "Đã copy!"; setTimeout(() => b.textContent = t, 1200); }
+function copyText(text, done) {
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(code).then(done).catch(done);
+    navigator.clipboard.writeText(text).then(done).catch(done);
   } else {
-    const ta = document.createElement("textarea"); ta.value = code;
+    const ta = document.createElement("textarea"); ta.value = text;
     document.body.appendChild(ta); ta.select();
     try { document.execCommand("copy"); } catch (err) {}
     document.body.removeChild(ta); done();
+  }
+}
+
+document.getElementById("grid").addEventListener("click", function (e) {
+  const cp = e.target.closest("[data-copy]");
+  if (cp) {
+    e.stopPropagation();
+    copyText(cp.getAttribute("data-copy"), function () {
+      const t = cp.textContent; cp.textContent = "Đã copy!";
+      setTimeout(function () { cp.textContent = t; }, 1200);
+    });
+    return;
+  }
+  if (e.target.closest(".go-btn")) return; // để link điều hướng bình thường
+  const tile = e.target.closest(".tile.flip");
+  if (tile) tile.classList.toggle("flipped");
+});
+
+document.getElementById("grid").addEventListener("keydown", function (e) {
+  if ((e.key === "Enter" || e.key === " ") && e.target.classList.contains("tile")) {
+    e.preventDefault();
+    e.target.classList.toggle("flipped");
   }
 });
 
