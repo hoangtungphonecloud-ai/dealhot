@@ -1,1 +1,148 @@
-{"categories":{"cong-nghe":"CÔNG NGHỆ","do-uong":"ĐỒ UỐNG","highlands":"HIGHLANDS","lazada":"LAZADA","me-be":"MẸ & BÉ","shopee":"SHOPEE","thoi-trang":"THỜI TRANG","tiki":"TIKI"},"deals":[{"active":true,"category":"shopee","color":"#EE4D2D","coupon":"","id":"shopee","image":"","label":"Săn Deal Shopee","name":"Shopee","note":"","order":1,"url":"https://s.shopee.vn/AKbBo01Juv"},{"active":true,"category":"lazada","color":"linear-gradient(135deg,#3b1d8f,#e91e63)","coupon":"","id":"lazada","image":"","label":"Mã Độc Quyền Lazada","name":"Lazada","note":"","order":2,"url":"https://www.lazada.vn"},{"active":true,"category":"highlands","color":"#8B1A1A","coupon":"","id":"highlands","image":"","label":"Săn Deal Highlands","name":"Highlands Coffee","note":"","order":3,"url":"https://www.highlandscoffee.com.vn"},{"active":true,"category":"tiki","color":"#1A94FF","coupon":"","id":"tiki","image":"","label":"Săn Deal Tiki","name":"Tiki","note":"","order":4,"url":"https://tiki.vn"},{"active":true,"category":"do-uong","color":"#E8930C","coupon":"","id":"tch","image":"","label":"Săn Deal TCH","name":"The Coffee House","note":"","order":5,"url":"https://www.thecoffeehouse.com"},{"active":true,"category":"do-uong","color":"#1565C0","coupon":"","id":"vinamilk","image":"","label":"Săn Deal Vinamilk","name":"Vinamilk","note":"","order":6,"url":"https://www.vinamilk.com.vn"},{"active":true,"category":"me-be","color":"#D63384","coupon":"","id":"concung","image":"","label":"Săn Mã ConCung","name":"ConCung","note":"","order":7,"url":"https://www.concung.com"},{"active":true,"category":"thoi-trang","color":"#C0392B","coupon":"","id":"bitis","image":"","label":"Săn Deal Bitis","name":"Bitis","note":"","order":8,"url":"https://bitis.com.vn"},{"active":true,"category":"cong-nghe","color":"#1a1a1a","coupon":"","id":"tgdd","image":"","label":"Săn Deal TGDD","name":"thegioididong","note":"","order":9,"url":"https://www.thegioididong.com"},{"active":true,"category":"do-uong","color":"#EE4D2D","coupon":"","id":"shopeefood","image":"","label":"ShopeeFood Highlands","name":"ShopeeFood","note":"","order":10,"url":"https://shopee.vn"}],"site":{"tagline":"Săn deal hot mỗi ngày","title":"DealHot"}}
+{
+  "categories": {
+    "cong-nghe": "CÔNG NGHỆ",
+    "do-uong": "ĐỒ UỐNG",
+    "highlands": "HIGHLANDS",
+    "lazada": "LAZADA",
+    "me-be": "MẸ & BÉ",
+    "shopee": "SHOPEE",
+    "thoi-trang": "THỜI TRANG",
+    "tiki": "TIKI"
+  },
+  "deals": [
+    {
+      "active": true,
+      "category": "shopee",
+      "color": "#EE4D2D",
+      "coupon": "",
+      "id": "shopee",
+      "image": "",
+      "label": "Săn Deal Shopee",
+      "name": "Shopee",
+      "note": "",
+      "order": 1,
+      "url": "https://s.shopee.vn/AKbBo01Juv"
+    },
+    {
+      "active": true,
+      "category": "lazada",
+      "color": "linear-gradient(135deg,#3b1d8f,#e91e63)",
+      "coupon": "",
+      "id": "lazada",
+      "image": "",
+      "label": "Mã Độc Quyền Lazada",
+      "name": "Lazada",
+      "note": "",
+      "order": 2,
+      "url": "https://www.lazada.vn"
+    },
+    {
+      "active": true,
+      "category": "highlands",
+      "color": "#8B1A1A",
+      "coupon": "",
+      "id": "highlands",
+      "image": "",
+      "label": "Săn Deal Highlands",
+      "name": "Highlands Coffee",
+      "note": "",
+      "order": 3,
+      "url": "https://www.highlandscoffee.com.vn"
+    },
+    {
+      "active": true,
+      "category": "tiki",
+      "color": "#1A94FF",
+      "coupon": "",
+      "id": "tiki",
+      "image": "",
+      "label": "Săn Deal Tiki",
+      "name": "Tiki",
+      "note": "",
+      "order": 4,
+      "url": "https://tiki.vn"
+    },
+    {
+      "active": true,
+      "category": "do-uong",
+      "color": "#E8930C",
+      "coupon": "",
+      "id": "tch",
+      "image": "",
+      "label": "Săn Deal TCH",
+      "name": "The Coffee House",
+      "note": "",
+      "order": 5,
+      "url": "https://www.thecoffeehouse.com"
+    },
+    {
+      "active": true,
+      "category": "do-uong",
+      "color": "#1565C0",
+      "coupon": "",
+      "id": "vinamilk",
+      "image": "",
+      "label": "Săn Deal Vinamilk",
+      "name": "Vinamilk",
+      "note": "",
+      "order": 6,
+      "url": "https://www.vinamilk.com.vn"
+    },
+    {
+      "active": true,
+      "category": "me-be",
+      "color": "#D63384",
+      "coupon": "",
+      "id": "concung",
+      "image": "",
+      "label": "Săn Mã ConCung",
+      "name": "ConCung",
+      "note": "",
+      "order": 7,
+      "url": "https://www.concung.com"
+    },
+    {
+      "active": true,
+      "category": "thoi-trang",
+      "color": "#C0392B",
+      "coupon": "",
+      "id": "bitis",
+      "image": "",
+      "label": "Săn Deal Bitis",
+      "name": "Bitis",
+      "note": "",
+      "order": 8,
+      "url": "https://bitis.com.vn"
+    },
+    {
+      "active": true,
+      "category": "cong-nghe",
+      "color": "#1a1a1a",
+      "coupon": "",
+      "id": "tgdd",
+      "image": "",
+      "label": "Săn Deal TGDD",
+      "name": "thegioididong",
+      "note": "",
+      "order": 9,
+      "url": "https://www.thegioididong.com"
+    },
+    {
+      "active": true,
+      "category": "do-uong",
+      "color": "#EE4D2D",
+      "coupon": "",
+      "id": "shopeefood",
+      "image": "",
+      "label": "ShopeeFood Highlands",
+      "name": "ShopeeFood",
+      "note": "",
+      "order": 10,
+      "url": "https://shopee.vn"
+    }
+  ],
+  "site": {
+    "tagline": "Săn deal hot mỗi ngày",
+    "title": "DealHot"
+  }
+}
