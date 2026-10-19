@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quản trị — DealHot</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif; margin: 0; background: #f4f6f8; color: #222; }
+  .wrap { max-width: 1020px; margin: 0 auto; padding: 24px 16px 60px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  h1 .b1 { color: #1a56db; } h1 .b2 { color: #f97316; }
+  .sub { color: #777; font-size: 13px; margin-bottom: 20px; }
+  .card { background: #fff; border-radius: 10px; padding: 18px; margin-bottom: 18px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .card h2 { font-size: 16px; margin: 0 0 12px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  @media (max-width: 640px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+  label { display: block; font-size: 13px; font-weight: 600; margin: 8px 0 4px; }
+  input[type=text], input[type=url], input[type=password], input[type=number], textarea, select {
+    width: 100%; padding: 9px 11px; font-size: 14px; border: 1px solid #d5dbe1; border-radius: 7px; }
+  textarea { min-height: 90px; font-family: monospace; font-size: 13px; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; align-items: center; }
+  button { padding: 10px 18px; font-size: 14px; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; }
+  .btn-primary { background: #1a56db; color: #fff; }
+  .btn-green { background: #1a7f37; color: #fff; }
+  .btn-red { background: #c0392b; color: #fff; }
+  .btn-gray { background: #e5e9ee; color: #333; }
+  .btn-small { padding: 6px 12px; font-size: 13px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 9px 8px; border-bottom: 1px solid #eee; vertical-align: middle; }
+  th { color: #666; font-size: 12px; text-transform: uppercase; letter-spacing: .4px; }
+  .swatch { display: inline-block; width: 26px; height: 26px; border-radius: 6px; vertical-align: middle; margin-right: 8px; border: 1px solid #ddd; }
+  .status { margin-top: 12px; font-size: 14px; padding: 10px 14px; border-radius: 8px; display: none; }
+  .status.ok { display: block; background: #e6f4ea; color: #1a7f37; }
+  .status.err { display: block; background: #fdecea; color: #b3261e; }
+  .status.info { display: block; background: #e8f0fe; color: #1a56db; }
+  .hint { font-size: 12.5px; color: #888; margin-top: 8px; line-height: 1.6; }
+  .hide { display: none; }
+  .checkline { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 14px; }
+  .checkline input { width: 18px; height: 18px; }
+  code { background: #eef1f4; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1><span class="b1">Deal</span><span class="b2">Hot</span> — Trang quản trị</h1>
+  <div class="sub">Sửa deal / mã giảm giá / link tiếp thị rồi bấm "Lưu lên GitHub" — web tự cập nhật sau 1–2 phút.</div>
+
+  <div class="card">
+    <h2>1. Kết nối GitHub</h2>
+    <div class="grid2">
+      <div><label>Chủ repo (owner)</label><input type="text" id="cfgOwner" placeholder="hoangtungphonecloud-ai"></div>
+      <div><label>Tên repo</label><input type="text" id="cfgRepo" placeholder="dealhot"></div>
+      <div><label>Nhánh (branch)</label><input type="text" id="cfgBranch" placeholder="main"></div>
+      <div><label>Token (fine-grained, quyền Contents: Read &amp; Write cho repo này)</label><input type="password" id="cfgToken" placeholder="github_pat_..."></div>
+    </div>
+    <div class="row">
+      <button class="btn-gray" id="btnSaveCfg">Lưu cấu hình</button>
+      <button class="btn-primary" id="btnLoad">Tải dữ liệu từ GitHub</button>
+      <a id="linkSite" href="#" target="_blank" style="font-size:14px">Xem web →</a>
+    </div>
+    <div class="hint">Token chỉ lưu trong trình duyệt của bạn (localStorage), không gửi đi đâu ngoài <code>api.github.com</code>. Tạo token tại: GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens → chỉ chọn repo này, quyền <b>Contents</b>: Read and write.</div>
+    <div class="status" id="cfgStatus"></div>
+  </div>
+
+  <div class="card hide" id="siteCard">
+    <h2>2. Thông tin chung</h2>
+    <div class="grid2">
+      <div><label>Tên web</label><input type="text" id="siteTitle"></div>
+      <div><label>Tagline</label><input type="text" id="siteTagline"></div>
+    </div>
+    <label>Danh mục (mỗi dòng: <code>slug=TIÊU ĐỀ</code>)</label>
+    <textarea id="catMap"></textarea>
+  </div>
+
+  <div class="card hide" id="dealCard">
+    <h2>3. Danh sách deal <span id="dealCount" style="color:#888;font-weight:400"></span></h2>
+    <div class="row" style="margin-top:0;margin-bottom:12px">
+      <button class="btn-primary btn-small" id="btnAdd">+ Thêm deal</button>
+    </div>
+    <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>#</th><th>Deal</th><th>Danh mục</th><th>Mã</th><th>Hiện</th><th></th></tr></thead>
+      <tbody id="dealRows"></tbody>
+    </table>
+    </div>
+
+    <div id="formBox" class="hide" style="margin-top:18px;border-top:1px solid #eee;padding-top:16px">
+      <h2 id="formTitle">Thêm deal</h2>
+      <input type="hidden" id="fId">
+      <div class="grid2">
+        <div><label>Chữ trên thanh đỏ *</label><input type="text" id="fLabel" placeholder="Săn Deal Shopee"></div>
+        <div><label>Tên thương hiệu (ô vuông) *</label><input type="text" id="fName" placeholder="Shopee"></div>
+        <div><label>Danh mục (slug) *</label><input type="text" id="fCat" placeholder="shopee"></div>
+        <div><label>Màu nền ô vuông</label><input type="text" id="fColor" placeholder="#EE4D2D"></div>
+        <div><label>Link ảnh (để trống = ô màu chữ)</label><input type="url" id="fImage" placeholder="https://..."></div>
+        <div><label>Link tiếp thị *</label><input type="url" id="fUrl" placeholder="https://s.shopee.vn/..."></div>
+        <div><label>Mã giảm giá</label><input type="text" id="fCoupon" placeholder="DEAL50"></div>
+        <div><label>Thứ tự</label><input type="number" id="fOrder" value="99"></div>
+      </div>
+      <label>Ghi chú (không hiện ra web)</label>
+      <input type="text" id="fNote">
+      <div class="checkline"><input type="checkbox" id="fActive" checked> <label for="fActive" style="margin:0">Hiển thị trên web</label></div>
+      <div class="row">
+        <button class="btn-green" id="btnSaveDeal">Lưu deal</button>
+        <button class="btn-gray" id="btnCancelDeal">Hủy</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card hide" id="pushCard">
+    <h2>4. Đẩy lên GitHub</h2>
+    <div class="row" style="margin-top:0">
+      <button class="btn-green" id="btnPush">Lưu lên GitHub</button>
+      <button class="btn-gray" id="btnBackup">Tải file backup</button>
+    </div>
+    <div class="status" id="pushStatus"></div>
+    <div class="hint">Sau khi đẩy thành công, GitHub Pages tự build lại trong khoảng 1–2 phút. Kiểm tra tab <b>Actions</b> của repo nếu web chưa cập nhật.</div>
+  </div>
+</div>
+
+<script>
+const LS_KEY = "dealhot_cfg";
+let DATA = null, SHA = null, editingId = null;
+
+function $(id) { return document.getElementById(id); }
+function esc(s) {
+  return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function b64encodeUnicode(str) {
+  const bytes = new TextEncoder().encode(str);
+  let bin = "";
+  for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+  return btoa(bin);
+}
+function b64decodeUnicode(b64) {
+  const bin = atob(b64.replace(/\n/g, ""));
+  const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
+}
+function status(el, type, msg) { el.className = "status " + type; el.textContent = msg; }
+function cfg() {
+  return {
+    owner: $("cfgOwner").value.trim(),
+    repo: $("cfgRepo").value.trim(),
+    branch: $("cfgBranch").value.trim() || "main",
+    token: $("cfgToken").value.trim()
+  };
+}
+function apiHeaders() {
+  return { "Accept": "application/vnd.github+json", "Authorization": "Bearer " + cfg().token };
+}
+function siteURL() {
+  const c = cfg();
+  return "https://" + c.owner + ".github.io/" + c.repo + "/";
+}
+
+// ---- config ----
+(function initCfg() {
+  try {
+    const c = JSON.parse(localStorage.getItem(LS_KEY) || "{}");
+    $("cfgOwner").value = c.owner || "";
+    $("cfgRepo").value = c.repo || "";
+    $("cfgBranch").value = c.branch || "main";
+    $("cfgToken").value = c.token || "";
+  } catch (e) {}
+  updateSiteLink();
+})();
+$("btnSaveCfg").onclick = function () {
+  localStorage.setItem(LS_KEY, JSON.stringify(cfg()));
+  updateSiteLink();
+  status($("cfgStatus"), "ok", "Đã lưu cấu hình vào trình duyệt.");
+};
+function updateSiteLink() {
+  const c = cfg();
+  $("linkSite").href = (c.owner && c.repo) ? siteURL() : "#";
+}
+
+// ---- load ----
+$("btnLoad").onclick = async function () {
+  const c = cfg();
+  if (!c.owner || !c.repo || !c.token) { status($("cfgStatus"), "err", "Nhập đủ owner, repo và token trước."); return; }
+  status($("cfgStatus"), "info", "Đang tải deals.json từ GitHub...");
+  try {
+    const r = await fetch("https://api.github.com/repos/" + encodeURIComponent(c.owner) + "/" + encodeURIComponent(c.repo) + "/contents/deals.json?ref=" + encodeURIComponent(c.branch), { headers: apiHeaders() });
+    if (!r.ok) throw new Error("GitHub trả về " + r.status + " — kiểm tra lại repo/branch/token.");
+    const j = await r.json();
+    SHA = j.sha;
+    DATA = JSON.parse(b64decodeUnicode(j.content));
+    DATA.deals = DATA.deals || []; DATA.categories = DATA.categories || {}; DATA.site = DATA.site || {};
+    renderAll();
+    status($("cfgStatus"), "ok", "Đã tải " + DATA.deals.length + " deal từ GitHub.");
+  } catch (e) {
+    status($("cfgStatus"), "err", "Lỗi: " + e.message);
+  }
+};
+
+// ---- render ----
+function renderAll() {
+  ["siteCard", "dealCard", "pushCard"].forEach(id => $(id).classList.remove("hide"));
+  $("siteTitle").value = DATA.site.title || "";
+  $("siteTagline").value = DATA.site.tagline || "";
+  $("catMap").value = Object.keys(DATA.categories).map(k => k + "=" + DATA.categories[k]).join("\n");
+  renderRows();
+}
+function renderRows() {
+  const tb = $("dealRows");
+  const list = [...DATA.deals].sort((a, b) => (a.order || 0) - (b.order || 0));
+  $("dealCount").textContent = "(" + list.length + " deal)";
+  tb.innerHTML = list.map(function (d) {
+    return "<tr>" +
+      "<td>" + esc(d.order || "") + "</td>" +
+      "<td><span class='swatch' style='background:" + esc(d.color || "#555") + "'></span><b>" + esc(d.label || d.name) + "</b><br><small style='color:#888'>" + esc(d.name || "") + "</small></td>" +
+      "<td>" + esc(d.category || "") + "</td>" +
+      "<td>" + (d.coupon ? "<code>" + esc(d.coupon) + "</code>" : "<span style='color:#bbb'>—</span>") + "</td>" +
+      "<td><input type='checkbox' data-act='" + esc(d.id) + "' " + (d.active ? "checked" : "") + "></td>" +
+      "<td style='white-space:nowrap'><button class='btn-gray btn-small' data-edit='" + esc(d.id) + "'>Sửa</button> " +
+      "<button class='btn-red btn-small' data-del='" + esc(d.id) + "'>Xóa</button></td></tr>";
+  }).join("");
+}
+document.addEventListener("change", function (e) {
+  const t = e.target;
+  if (t.hasAttribute("data-act")) {
+    const d = DATA.deals.find(x => String(x.id) === t.getAttribute("data-act"));
+    if (d) d.active = t.checked;
+  }
+});
+document.addEventListener("click", function (e) {
+  const t = e.target;
+  if (t.hasAttribute("data-edit")) openForm(t.getAttribute("data-edit"));
+  if (t.hasAttribute("data-del")) {
+    if (confirm("Xóa deal này?")) {
+      DATA.deals = DATA.deals.filter(x => String(x.id) !== t.getAttribute("data-del"));
+      renderRows();
+    }
+  }
+});
+
+// ---- form ----
+$("btnAdd").onclick = function () { openForm(null); };
+$("btnCancelDeal").onclick = function () { $("formBox").classList.add("hide"); };
+function openForm(id) {
+  editingId = id;
+  const d = id ? DATA.deals.find(x => String(x.id) === id) : null;
+  $("formTitle").textContent = d ? "Sửa deal" : "Thêm deal";
+  $("fId").value = d ? d.id : "";
+  $("fLabel").value = d ? (d.label || "") : "";
+  $("fName").value = d ? (d.name || "") : "";
+  $("fCat").value = d ? (d.category || "") : "";
+  $("fColor").value = d ? (d.color || "") : "";
+  $("fImage").value = d ? (d.image || "") : "";
+  $("fUrl").value = d ? (d.url || "") : "";
+  $("fCoupon").value = d ? (d.coupon || "") : "";
+  $("fNote").value = d ? (d.note || "") : "";
+  $("fOrder").value = d ? (d.order || 99) : ((DATA.deals.length + 1));
+  $("fActive").checked = d ? !!d.active : true;
+  $("formBox").classList.remove("hide");
+  $("formBox").scrollIntoView({ behavior: "smooth" });
+}
+$("btnSaveDeal").onclick = function () {
+  const label = $("fLabel").value.trim(), name = $("fName").value.trim(),
+        cat = $("fCat").value.trim(), url = $("fUrl").value.trim();
+  if (!label || !name || !cat) { alert("Nhập đủ: chữ trên thanh đỏ, tên thương hiệu, danh mục."); return; }
+  if (editingId) {
+    const d = DATA.deals.find(x => String(x.id) === editingId);
+    Object.assign(d, { label, name, category: cat, color: $("fColor").value.trim(), image: $("fImage").value.trim(), url, coupon: $("fCoupon").value.trim(), note: $("fNote").value.trim(), order: parseInt($("fOrder").value, 10) || 99, active: $("fActive").checked });
+  } else {
+    DATA.deals.push({ id: "d" + Date.now(), label, name, category: cat, color: $("fColor").value.trim() || "#555", image: $("fImage").value.trim(), url, coupon: $("fCoupon").value.trim(), note: $("fNote").value.trim(), order: parseInt($("fOrder").value, 10) || 99, active: $("fActive").checked });
+  }
+  $("formBox").classList.add("hide");
+  renderRows();
+};
+
+// ---- push ----
+$("btnPush").onclick = async function () {
+  const c = cfg();
+  if (!c.token) { status($("pushStatus"), "err", "Chưa có token."); return; }
+  DATA.site.title = $("siteTitle").value.trim();
+  DATA.site.tagline = $("siteTagline").value.trim();
+  const cats = {};
+  $("catMap").value.split("\n").forEach(function (line) {
+    const i = line.indexOf("=");
+    if (i > 0) cats[line.slice(0, i).trim()] = line.slice(i + 1).trim();
+  });
+  DATA.categories = cats;
+  status($("pushStatus"), "info", "Đang đẩy lên GitHub...");
+  try {
+    const content = b64encodeUnicode(JSON.stringify(DATA, null, 2));
+    const r = await fetch("https://api.github.com/repos/" + encodeURIComponent(c.owner) + "/" + encodeURIComponent(c.repo) + "/contents/deals.json", {
+      method: "PUT",
+      headers: Object.assign({ "Content-Type": "application/json" }, apiHeaders()),
+      body: JSON.stringify({ message: "Cap nhat deal " + new Date().toISOString().slice(0, 16).replace("T", " "), content: content, sha: SHA, branch: c.branch })
+    });
+    if (!r.ok) {
+      const ej = await r.json().catch(() => ({}));
+      throw new Error("GitHub trả về " + r.status + (ej.message ? ": " + ej.message : ""));
+    }
+    const j = await r.json();
+    SHA = j.content.sha;
+    status($("pushStatus"), "ok", "Đã lưu! Web sẽ cập nhật trong 1–2 phút: " + siteURL());
+  } catch (e) {
+    status($("pushStatus"), "err", "Lỗi: " + e.message);
+  }
+};
+$("btnBackup").onclick = function () {
+  const blob = new Blob([JSON.stringify(DATA, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "deals-backup.json";
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+};
+</script>
+</body>
+</html>
