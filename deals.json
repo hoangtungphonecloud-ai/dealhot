@@ -7,7 +7,8 @@
     "me-be": "MẸ & BÉ",
     "shopee": "SHOPEE",
     "thoi-trang": "THỜI TRANG",
-    "tiki": "TIKI"
+    "tiki": "TIKI",
+    "the-tin-dung": "THẺ TÍN DỤNG"
   },
   "deals": [
     {
@@ -139,6 +140,19 @@
       "note": "",
       "order": 10,
       "url": "https://shopee.vn"
+    },
+    {
+      "id": "vib-max",
+      "name": "VIB Max",
+      "label": "Mở Thẻ VIB Max Card",
+      "category": "the-tin-dung",
+      "color": "#0057A8",
+      "image": "https://onlinebank.com.vn/wp-content/uploads/2024/08/logo-vib.jpg",
+      "url": "https://max-super-agent.onelink.me/i1fz/ref_link?openacc=true&ref=222532&adj_label=222532&openacc=true",
+      "coupon": "",
+      "note": "Link ref mo the VIB Max Card",
+      "order": 11,
+      "active": true
     }
   ],
   "site": {
