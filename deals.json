@@ -16,7 +16,7 @@
       "color": "#EE4D2D",
       "coupon": "",
       "id": "shopee",
-      "image": "",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/0/0e/Shopee_logo.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
       "label": "Săn Deal Shopee",
       "name": "Shopee",
       "note": "",
@@ -29,7 +29,7 @@
       "color": "linear-gradient(135deg,#3b1d8f,#e91e63)",
       "coupon": "",
       "id": "lazada",
-      "image": "",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Lazada_%282019%29.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
       "label": "Mã Độc Quyền Lazada",
       "name": "Lazada",
       "note": "",
@@ -37,7 +37,7 @@
       "url": "https://www.lazada.vn"
     },
     {
-      "active": false,
+      "active": true,
       "category": "highlands",
       "color": "#8B1A1A",
       "coupon": "",
@@ -50,12 +50,12 @@
       "url": "https://www.highlandscoffee.com.vn"
     },
     {
-      "active": false,
+      "active": true,
       "category": "tiki",
       "color": "#1A94FF",
       "coupon": "",
       "id": "tiki",
-      "image": "",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/4/43/Logo_Tiki_2023.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
       "label": "Săn Deal Tiki",
       "name": "Tiki",
       "note": "",
@@ -63,12 +63,12 @@
       "url": "https://tiki.vn"
     },
     {
-      "active": false,
+      "active": true,
       "category": "do-uong",
       "color": "#E8930C",
       "coupon": "",
       "id": "tch",
-      "image": "",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/9/97/The_Coffee_House_logo.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
       "label": "Săn Deal TCH",
       "name": "The Coffee House",
       "note": "",
@@ -76,12 +76,12 @@
       "url": "https://www.thecoffeehouse.com"
     },
     {
-      "active": false,
+      "active": true,
       "category": "do-uong",
       "color": "#1565C0",
       "coupon": "",
       "id": "vinamilk",
-      "image": "",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/7/70/Vinamilk_new_logo.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
       "label": "Săn Deal Vinamilk",
       "name": "Vinamilk",
       "note": "",
@@ -89,7 +89,7 @@
       "url": "https://www.vinamilk.com.vn"
     },
     {
-      "active": false,
+      "active": true,
       "category": "me-be",
       "color": "#D63384",
       "coupon": "",
@@ -102,7 +102,7 @@
       "url": "https://www.concung.com"
     },
     {
-      "active": false,
+      "active": true,
       "category": "thoi-trang",
       "color": "#C0392B",
       "coupon": "",
@@ -115,12 +115,12 @@
       "url": "https://bitis.com.vn"
     },
     {
-      "active": false,
+      "active": true,
       "category": "cong-nghe",
       "color": "#1a1a1a",
       "coupon": "",
       "id": "tgdd",
-      "image": "",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/2/21/Logo_Thegioididong.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
       "label": "Săn Deal TGDD",
       "name": "thegioididong",
       "note": "",
@@ -128,7 +128,7 @@
       "url": "https://www.thegioididong.com"
     },
     {
-      "active": false,
+      "active": true,
       "category": "do-uong",
       "color": "#EE4D2D",
       "coupon": "",

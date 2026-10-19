@@ -23,7 +23,7 @@
   .tile.coming { cursor: default; }
   .thumb { aspect-ratio: 1; border-radius: 10px; display: flex; align-items: center; justify-content: center; text-align: center; font-weight: 800; font-size: 19px; line-height: 1.25; color: #fff; padding: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.12); transition: transform .15s ease; }
   a.tile:hover .thumb { transform: translateY(-3px); }
-  .thumb img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
+  .thumb img { width: 100%; height: 100%; object-fit: contain; padding: 14px; }
   .label { background: #c0392b; color: #fff; text-align: center; padding: 9px 6px; border-radius: 7px; margin-top: 9px; font-size: 14px; font-weight: 700; }
   .coupon { width: 100%; margin-top: 8px; border: 2px dashed #e67e22; background: #fef9e7; color: #935116; border-radius: 7px; padding: 7px 6px; font-size: 13px; font-weight: 700; cursor: pointer; }
   .coupon:hover { background: #fdeec9; }
@@ -88,7 +88,8 @@ function tileHTML(d) {
   const bg = d.image
     ? '<img src="' + esc(d.image) + '" alt="' + esc(d.name) + '" loading="lazy">'
     : esc(d.name);
-  const thumb = '<div class="thumb" style="background:' + esc(d.color || "#555") + '">' + bg + '</div>';
+  const thumbBg = d.image ? "#ffffff" : esc(d.color || "#555");
+  const thumb = '<div class="thumb" style="background:' + thumbBg + '">' + bg + '</div>';
   const label = '<div class="label">' + esc(d.label || d.name) + '</div>';
   const coupon = d.coupon
     ? '<button class="coupon" data-code="' + esc(d.coupon) + '" title="Bấm để copy mã">Mã: ' + esc(d.coupon) + ' ⧉</button>'
