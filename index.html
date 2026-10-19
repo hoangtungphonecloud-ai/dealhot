@@ -58,19 +58,23 @@ body::before {
   -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 42%);
   mask-image: linear-gradient(180deg, #000 0%, transparent 42%);
 }
-.page-frame {
-  position: fixed; inset: 10px; z-index: 1200; pointer-events: none; border-radius: 18px;
-  border: 3px solid transparent;
-  background: linear-gradient(135deg, #f97316, #7c3aed 55%, #1a56db) border-box;
-  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor; mask-composite: exclude;
+body { padding: 16px 14px 30px; }
+.page-shell {
+  max-width: 1160px; margin: 0 auto; border-radius: 24px;
+  border: 2px solid transparent;
+  background:
+    linear-gradient(rgba(255,255,255,.97), rgba(255,255,255,.97)) padding-box,
+    linear-gradient(135deg, #f97316, #7c3aed 55%, #1a56db) border-box;
+  box-shadow: 0 24px 70px rgba(76,40,160,.16), 0 4px 18px rgba(0,0,0,.06);
+  overflow: clip;
 }
 .topbar {
-  position: sticky; top: 0; z-index: 900;
-  background: rgba(255,255,255,.88);
+  position: sticky; top: 14px; z-index: 900;
+  margin: 14px 14px 0; border-radius: 16px; max-width: none;
+  background: rgba(255,255,255,.92);
   -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(20,20,40,.07);
-  box-shadow: 0 8px 28px rgba(124,58,237,.08);
+  border: 1px solid rgba(20,20,40,.07);
+  box-shadow: 0 10px 30px rgba(124,58,237,.10);
 }
 nav a { position: relative; transition: color .2s ease; padding-bottom: 8px; }
 nav a::after {
@@ -116,7 +120,7 @@ footer { position: relative; z-index: 1; }
 </style>
 </head>
 <body>
-<div class="page-frame" aria-hidden="true"></div>
+<div class="page-shell">
 
 <header class="topbar">
   <a class="logo-img-link" href="#/"><span class="logo-wrap"><img src="https://graph.facebook.com/870613039464573/picture?type=large&amp;width=200" alt="TungHoang"></span></a>
@@ -132,6 +136,7 @@ footer { position: relative; z-index: 1; }
   <span id="footTag">Săn deal hot mỗi ngày</span> ·
   <a href="gioi-thieu.html">Giới thiệu</a>
 </footer>
+</div><!-- /page-shell -->
 
 <script>
 let DATA = null;
