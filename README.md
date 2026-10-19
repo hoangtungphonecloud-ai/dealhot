@@ -1,4 +1,4 @@
-# DealHot — Web săn deal mỗi ngày
+# TungHoang — Web săn deal mỗi ngày
 
 Web tĩnh hiển thị lưới deal ("DEAL HOT HÔM NAY") kiểu danhgiavui.com, kèm **trang quản trị** để cập nhật link tiếp thị và mã giảm giá — sửa trên trang quản trị là tự commit lên GitHub, web live lại sau 1–2 phút.
 
