@@ -38,8 +38,85 @@
   footer { border-top: 1px solid #eee; text-align: center; color: #999; font-size: 13px; padding: 22px 16px 34px; }
   footer a { color: #1a56db; text-decoration: none; }
 </style>
+<style>
+/* ===== Professional theme upgrade ===== */
+html { scroll-behavior: smooth; }
+::selection { background: rgba(249,115,22,.28); }
+body {
+  background:
+    radial-gradient(900px 420px at 10% -4%, rgba(249,115,22,.12), transparent 60%),
+    radial-gradient(820px 400px at 90% 4%, rgba(124,58,237,.10), transparent 60%),
+    radial-gradient(760px 520px at 50% 112%, rgba(26,86,219,.08), transparent 60%),
+    linear-gradient(180deg, #FFFBF4 0%, #FFFFFF 36%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: radial-gradient(rgba(26,86,219,.08) 1px, transparent 1.5px);
+  background-size: 26px 26px;
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 42%);
+  mask-image: linear-gradient(180deg, #000 0%, transparent 42%);
+}
+.page-frame {
+  position: fixed; inset: 10px; z-index: 1200; pointer-events: none; border-radius: 18px;
+  border: 3px solid transparent;
+  background: linear-gradient(135deg, #f97316, #7c3aed 55%, #1a56db) border-box;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+}
+.topbar {
+  position: sticky; top: 0; z-index: 900;
+  background: rgba(255,255,255,.88);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(20,20,40,.07);
+  box-shadow: 0 8px 28px rgba(124,58,237,.08);
+}
+nav a { position: relative; transition: color .2s ease; padding-bottom: 8px; }
+nav a::after {
+  content: ""; position: absolute; left: 2px; right: 2px; bottom: 3px; height: 2px; border-radius: 2px;
+  background: linear-gradient(90deg, #f97316, #7c3aed);
+  transform: scaleX(0); transform-origin: left; transition: transform .25s ease;
+}
+nav a:hover::after, nav a.active::after { transform: scaleX(1); }
+.section-title {
+  background: linear-gradient(115deg, #c0392b 10%, #7c3aed 90%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  font-size: 27px; position: relative; z-index: 1;
+}
+.section-title::after {
+  content: ""; display: block; width: 76px; height: 4px; margin: 12px auto 0; border-radius: 4px;
+  background: linear-gradient(90deg, #f97316, #7c3aed, #1a56db);
+}
+.searchbar { position: relative; z-index: 1; }
+.searchbar input {
+  box-shadow: 0 3px 14px rgba(30,30,60,.07);
+  transition: border-color .2s ease, box-shadow .2s ease;
+  background: rgba(255,255,255,.94);
+}
+.searchbar input:focus { border-color: #f97316; box-shadow: 0 0 0 4px rgba(249,115,22,.16); }
+.grid { position: relative; z-index: 1; }
+.tile { animation: tileIn .55s cubic-bezier(.22,.8,.32,1) backwards; }
+@keyframes tileIn { from { opacity: 0; transform: translateY(24px) scale(.98); } }
+a.tile { transition: transform .22s ease; }
+a.tile:hover { transform: translateY(-6px); }
+a.tile:hover .thumb { box-shadow: 0 16px 34px rgba(124,58,237,.20); }
+.thumb { transition: box-shadow .25s ease; }
+.thumb img { transition: transform .35s ease; }
+a.tile:hover .thumb img { transform: scale(1.08); }
+.label {
+  background: linear-gradient(135deg, #d43d2a, #a93226);
+  box-shadow: 0 3px 10px rgba(192,57,43,.25);
+  transition: filter .2s ease, box-shadow .2s ease;
+}
+a.tile:hover .label { filter: brightness(1.1); box-shadow: 0 6px 16px rgba(192,57,43,.35); }
+.coupon { transition: transform .18s ease, box-shadow .18s ease, background .18s ease; }
+.coupon:hover { transform: translateY(-1px); background: #fdf0d3; box-shadow: 0 5px 14px rgba(230,126,34,.35); }
+footer { position: relative; z-index: 1; }
+</style>
 </head>
 <body>
+<div class="page-frame" aria-hidden="true"></div>
 
 <header class="topbar">
   <a class="logo-img-link" href="#/"><span class="logo-wrap"><img src="https://graph.facebook.com/870613039464573/picture?type=large&amp;width=200" alt="TungHoang"></span></a>
@@ -91,7 +168,8 @@ function renderNav() {
   document.getElementById("nav").innerHTML = html;
 }
 
-function tileHTML(d) {
+function tileHTML(d, i) {
+  const delay = Math.min((i || 0) * 55, 660);
   const bg = d.image
     ? '<img src="' + esc(d.image) + '" alt="' + esc(d.name) + '" loading="lazy">'
     : esc(d.name);
@@ -102,10 +180,11 @@ function tileHTML(d) {
     ? '<button class="coupon" data-code="' + esc(d.coupon) + '" title="Bấm để copy mã">Mã: ' + esc(d.coupon) + ' ⧉</button>'
     : '';
   const inner = thumb + label + coupon;
+  const style = ' style="animation-delay:' + delay + 'ms"';
   if (d.url) {
-    return '<a class="tile" href="' + esc(d.url) + '" target="_blank" rel="noopener sponsored">' + inner + '</a>';
+    return '<a class="tile"' + style + ' href="' + esc(d.url) + '" target="_blank" rel="noopener sponsored">' + inner + '</a>';
   }
-  return '<div class="tile coming">' + inner + '<div class="label" style="background:#999">Sắp cập nhật link</div></div>';
+  return '<div class="tile coming"' + style + '>' + inner + '<div class="label" style="background:#999">Sắp cập nhật link</div></div>';
 }
 
 function route() {
