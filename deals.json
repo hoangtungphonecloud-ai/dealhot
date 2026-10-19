@@ -37,7 +37,7 @@
       "url": "https://www.lazada.vn"
     },
     {
-      "active": true,
+      "active": false,
       "category": "highlands",
       "color": "#8B1A1A",
       "coupon": "",
@@ -50,7 +50,7 @@
       "url": "https://www.highlandscoffee.com.vn"
     },
     {
-      "active": true,
+      "active": false,
       "category": "tiki",
       "color": "#1A94FF",
       "coupon": "",
@@ -63,7 +63,7 @@
       "url": "https://tiki.vn"
     },
     {
-      "active": true,
+      "active": false,
       "category": "do-uong",
       "color": "#E8930C",
       "coupon": "",
@@ -76,7 +76,7 @@
       "url": "https://www.thecoffeehouse.com"
     },
     {
-      "active": true,
+      "active": false,
       "category": "do-uong",
       "color": "#1565C0",
       "coupon": "",
@@ -89,7 +89,7 @@
       "url": "https://www.vinamilk.com.vn"
     },
     {
-      "active": true,
+      "active": false,
       "category": "me-be",
       "color": "#D63384",
       "coupon": "",
@@ -102,7 +102,7 @@
       "url": "https://www.concung.com"
     },
     {
-      "active": true,
+      "active": false,
       "category": "thoi-trang",
       "color": "#C0392B",
       "coupon": "",
@@ -115,7 +115,7 @@
       "url": "https://bitis.com.vn"
     },
     {
-      "active": true,
+      "active": false,
       "category": "cong-nghe",
       "color": "#1a1a1a",
       "coupon": "",
@@ -128,7 +128,7 @@
       "url": "https://www.thegioididong.com"
     },
     {
-      "active": true,
+      "active": false,
       "category": "do-uong",
       "color": "#EE4D2D",
       "coupon": "",
